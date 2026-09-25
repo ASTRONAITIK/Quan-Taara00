@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Spaceflight, astronomy, and exploration headlines published in the last 24 hours.">
+  <title>Space News · Quan-Taara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #03020b;
+      --panel: rgba(166, 191, 255, .055);
+      --line: rgba(166, 191, 255, .16);
+      --text: #f1f3ff;
+      --muted: #b5b8d0;
+      --dim: #8589a6;
+      --blue: #72d7ff;
+      --purple: #c49aff;
+      --orange: #ff9b5a;
+      --green: #56e09a;
+      --sans: 'Space Grotesk', sans-serif;
+      --mono: 'DM Mono', monospace;
+      --serif: 'Fraunces', serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: radial-gradient(ellipse at 50% -18%, rgba(111, 82, 177, .12), transparent 50%), var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid var(--line);
+      background: rgba(5, 4, 14, .94);
+      backdrop-filter: blur(16px);
+    }
+    .masthead-inner {
+      width: min(1320px, calc(100% - 48px));
+      min-width: 0;
+      min-height: 78px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      color: var(--orange);
+      font: 500 .76rem var(--mono);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .brand span { color: var(--dim); font-size: .9em; letter-spacing: .08em; }
+    .nav-links { display: flex; align-items: center; gap: 5px; min-width: 0; }
+    .nav-links a {
+      padding: 9px 12px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--muted);
+      font: 500 .68rem var(--sans);
+      letter-spacing: .06em;
+      transition: color .18s, background .18s, border-color .18s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a[aria-current=page] {
+      color: var(--orange);
+      border-color: rgba(255, 155, 90, .24);
+      background: rgba(255, 155, 90, .07);
+    }
+    main { width: min(1240px, calc(100% - 48px)); margin: auto; padding: 76px 0 88px; }
+    .intro {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 36px;
+      margin-bottom: 34px;
+      padding: 4px 0 30px;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 17px;
+      color: var(--orange);
+      font: 500 .62rem var(--mono);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ''; width: 25px; height: 1px; background: var(--orange); }
+    h1 {
+      margin: 0;
+      font: 600 clamp(4rem, 8vw, 7.6rem)/.94 var(--serif);
+      letter-spacing: -.055em;
+      white-space: nowrap;
+    }
+    h1 em { color: var(--blue); font-weight: 500; }
+    .intro-copy { max-width: 540px; margin: 18px 0 0; color: var(--muted); font-size: 16px; line-height: 1.72; }
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      flex: 0 0 auto;
+      margin-bottom: 7px;
+      padding: 9px 12px;
+      border: 1px solid rgba(114, 215, 255, .18);
+      border-radius: 999px;
+      color: var(--blue);
+      font: 500 .58rem var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+    .feed-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+      color: var(--dim);
+      font: 400 .58rem var(--mono);
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    .feed-count { color: var(--orange); }
+    .news-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .story {
+      display: flex;
+      min-height: 250px;
+      flex-direction: column;
+      padding: 24px 25px 20px;
+      border: 1px solid var(--line);
+      border-left: 2px solid rgba(114, 215, 255, .52);
+      border-radius: 12px;
+      background: var(--panel);
+      transition: border-color .18s, background .18s, transform .18s;
+    }
+    .story:hover, .story:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(114, 215, 255, .38);
+      background: rgba(166, 191, 255, .08);
+      outline: none;
+    }
+    .story-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      color: var(--dim);
+      font: 500 .56rem/1.5 var(--mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .story-source { color: var(--orange); }
+    .story h2 { margin: 0 0 10px; font-size: clamp(1.25rem, 1.8vw, 1.6rem); font-weight: 500; line-height: 1.32; letter-spacing: -.025em; }
+    .story-summary { display: -webkit-box; overflow: hidden; margin: 0 0 22px; color: var(--muted); font-size: 14px; line-height: 1.68; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+    .story-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+      padding-top: 13px;
+      border-top: 1px solid var(--line);
+      font: 400 .56rem var(--mono);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .story-time { color: var(--dim); }
+    .story-open { color: var(--blue); white-space: nowrap; }
+    .empty-state {
+      grid-column: 1 / -1;
+      display: grid;
+      min-height: 220px;
+      place-content: center;
+      padding: 28px;
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+    .empty-state strong { display: block; margin-bottom: 7px; color: var(--text); font: 500 .7rem var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .source-note { margin: 18px 0 0; color: var(--dim); font: 400 .56rem/1.7 var(--mono); letter-spacing: .025em; }
+    .source-note a { color: var(--blue); text-underline-offset: 3px; }
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 24px max(24px, calc((100% - 1240px) / 2));
+      border-top: 1px solid var(--line);
+      color: var(--dim);
+      font: 400 .56rem var(--mono);
+      letter-spacing: .05em;
+    }
+    @media (max-width: 980px) {
+      .intro { align-items: flex-start; flex-direction: column; gap: 20px; }
+      .live-pill { margin: 0; }
+      h1 { font-size: clamp(4rem, 10vw, 6.8rem); }
+    }
+    @media (max-width: 700px) {
+      .masthead-inner { width: calc(100% - 32px); min-height: 62px; flex-direction: row; gap: 8px; padding: 8px 0; }
+      .brand { flex: 0 0 auto; font-size: .58rem; letter-spacing: .08em; }
+      .brand span { display: none; }
+      .nav-links { flex: 1 1 auto; width: auto; justify-content: flex-start; gap: 0; overflow-x: auto; scrollbar-width: none; }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links a { flex: 0 0 auto; padding: 6px 4px; font-size: .56rem; letter-spacing: 0; }
+      main { width: calc(100% - 32px); padding: 48px 0 62px; }
+      .intro { margin-bottom: 25px; padding-bottom: 22px; }
+      .eyebrow { margin-bottom: 13px; font-size: .54rem; letter-spacing: .12em; }
+      h1 { font-size: clamp(2.85rem, 14vw, 5.2rem); }
+      .intro-copy { font-size: 15px; }
+      .news-grid { grid-template-columns: 1fr; gap: 11px; }
+      .story { min-height: 220px; padding: 20px; }
+      .story-meta { margin-bottom: 16px; }
+      .feed-bar { align-items: flex-start; flex-direction: column; gap: 6px; }
+      footer { flex-direction: column; text-align: center; padding: 22px 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-inner">
+      <a class="brand" href="quantaaraPrototype.backup.html">Quan-Taara <span>// Observatory</span></a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="quantaaraPrototype.backup.html">Home</a>
+        <a href="quantaaraPrototype.backup.html#disciples">Compendium</a>
+        <a href="quantaaraPrototype.backup.html#ab-sec">Observatory</a>
+        <a href="news.html" aria-current="page">Space News</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <div class="eyebrow">Quan-Taara · Orbital briefing</div>
+        <h1 id="page-title">Space <em>News</em></h1>
+        <p class="intro-copy">Launches, discoveries, and missions published in the last 24 hours.</p>
+      </div>
+      <div class="live-pill" role="status" aria-live="polite"><span class="live-dot"></span><span id="feedStatus">Checking recent articles…</span></div>
+    </section>
+    <div class="feed-bar"><span class="feed-count" id="feedCount">Recent stories</span><span id="updatedAt">Headlines published within the past 24 hours</span></div>
+    <section class="news-grid" id="newsGrid" aria-label="Space news headlines" aria-busy="true" aria-live="polite">
+      <div class="empty-state"><strong>Connecting to the news feed</strong>Recent headlines will appear here.</div>
+    </section>
+    <p class="source-note">Headlines link to their original publishers · Feed by <a href="https://github.com/TheSpaceDevs/spaceflightnewsapi" target="_blank" rel="noopener noreferrer">The Space Devs Spaceflight News API</a></p>
+  </main>
+  <footer><span>Quan-Taara · Interface Mark-I</span><span>Spaceflight · Research · Exploration</span></footer>
+  <script>
+    function showEmpty(title,message){
+      const grid=document.getElementById('newsGrid'),empty=document.createElement('div'),heading=document.createElement('strong');
+      empty.className='empty-state';heading.textContent=title;empty.append(heading,document.createTextNode(message));grid.replaceChildren(empty);
+    }
+    function relativeTime(value){
+      const date=new Date(value),elapsed=(Date.now()-date.getTime())/1000;if(!Number.isFinite(elapsed))return 'Recently';
+      const rtf=new Intl.RelativeTimeFormat('en',{numeric:'auto'});if(elapsed<50)return 'Just now';if(elapsed<3600)return rtf.format(-Math.round(elapsed/60),'minute');if(elapsed<86400)return rtf.format(-Math.round(elapsed/3600),'hour');return rtf.format(-Math.round(elapsed/86400),'day');
+    }
+    function renderStories(articles){
+      const grid=document.getElementById('newsGrid'),valid=(Array.isArray(articles)?articles:[]).filter(article=>{
+        if(!article||!Number.isFinite(Date.parse(article.published_at)))return false;
+        try{const url=new URL(article.url);return url.protocol==='https:'||url.protocol==='http:';}catch{return false;}
+      });
+      if(!valid.length){showEmpty('No fresh headlines yet','No space stories were published in the last 24 hours. Check back soon.');return 0;}
+      const cards=valid.map((article,index)=>{
+        const card=document.createElement('a');card.className='story';card.href=new URL(article.url).href;card.target='_blank';card.rel='noopener noreferrer';
+        card.setAttribute('aria-label',`${article.title} — opens at ${article.news_site||'publisher'}`);
+        const meta=document.createElement('div');meta.className='story-meta';
+        const source=document.createElement('span');source.className='story-source';source.textContent=String(article.news_site||'Space news').toUpperCase();
+        const number=document.createElement('span');number.textContent=String(index+1).padStart(2,'0');meta.append(source,number);
+        const title=document.createElement('h2');title.textContent=String(article.title||'Space news');
+        const summary=document.createElement('p');summary.className='story-summary';summary.textContent=String(article.summary||'Open the publisher story for the full report.');
+        const bottom=document.createElement('div');bottom.className='story-bottom';
+        const time=document.createElement('time');time.className='story-time';time.dateTime=article.published_at;time.textContent=relativeTime(article.published_at);
+        const open=document.createElement('span');open.className='story-open';open.textContent='Read story ↗';bottom.append(time,open);card.append(meta,title,summary,bottom);return card;
+      });
+      grid.replaceChildren(...cards);return cards.length;
+    }
+    async function loadStories(){
+      const grid=document.getElementById('newsGrid'),status=document.getElementById('feedStatus');grid.setAttribute('aria-busy','true');
+      const cutoff=new Date(Date.now()-24*60*60*1000),feedUrl=new URL('https://api.spaceflightnewsapi.net/v4/articles/');
+      feedUrl.searchParams.set('limit','100');feedUrl.searchParams.set('ordering','-published_at');feedUrl.searchParams.set('published_at_gte',cutoff.toISOString());
+      try{
+        const response=await fetch(feedUrl.href,{cache:'no-store',signal:AbortSignal.timeout(12000)}),data=await response.json().catch(()=>({}));
+        if(!response.ok||!Array.isArray(data.results))throw new Error('News feed unavailable.');
+        const articles=data.results.filter(article=>Date.parse(article.published_at)>=cutoff.getTime());
+        const count=renderStories(articles),updated=new Date();
+        status.textContent='Feed connected';
+        document.getElementById('feedCount').textContent=`${count} recent ${count===1?'story':'stories'}`;
+        document.getElementById('updatedAt').textContent=`Feed checked ${updated.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}`;
+      }catch{
+        status.textContent='Feed temporarily unavailable';document.getElementById('feedCount').textContent='No connection';
+        showEmpty('Signal lost','Space news could not be reached. Refresh this page in a little while to try again.');
+      }finally{grid.setAttribute('aria-busy','false');}
+    }
+    window.addEventListener('load',loadStories);
+  </script>
+</body>
+</html>
