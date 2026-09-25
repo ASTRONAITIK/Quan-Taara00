@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Quan-Taara · Interface Mark-I</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style src="styler.css">
+
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-ring-wrap"><div class="l-ring"></div><div class="l-ring2"></div></div>
+  <div class="l-txt" id="ltxt">Calibrating Sagittarius A</div>
+</div>
+
+<!-- AUTH -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <div class="auth-logo">Quan-Taara</div>
+    <div class="auth-sub" id="authSub">Interface Mark-I · Sagittarius A Edition</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Login</button>
+      <button class="auth-tab" id="tabReg"   onclick="switchTab('register')">Register</button>
+    </div>
+    <div class="auth-form" id="formLogin">
+      <div class="auth-field"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com" autocomplete="email"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password"></div>
+      <div class="auth-err" id="loginErr"></div>
+      <button class="auth-btn" id="btnLogin" onclick="doLogin()"><span>Enter the Interface</span></button>
+    </div>
+    <div class="auth-form hidden" id="formReg">
+      <div class="auth-field"><label>Username</label><input type="text" id="regUser" placeholder="StargazerX" autocomplete="username"></div>
+      <div class="auth-field"><label>Email</label><input type="email" id="regEmail" placeholder="your@email.com" autocomplete="email"></div>
+      <div class="auth-field"><label>Password</label><input type="password" id="regPass" placeholder="min 6 characters" autocomplete="new-password"></div>
+      <div class="auth-err" id="regErr"></div>
+      <button class="auth-btn" id="btnRegister" onclick="doRegister()"><span>Create Account</span></button>
+    </div>
+  </div>
+</div>
+
+<div id="cur-dot"></div>
+<div id="cur-ring"></div>
+<div class="vig"></div>
+<div class="noise"></div>
+<canvas id="bg-cv"></canvas>
+<canvas id="globe-cv"></canvas>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nlogo" onclick="navGo('disciples')">Quan-Taara</div>
+  <div class="ndiv"></div>
+  <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-collapse">
+    <ul class="nlinks">
+      <li><a id="nv-d" href="javascript:void(0)" onclick="navGo('disciples');closeNav()">Disciples</a></li>
+      <li><a id="nv-t" href="javascript:void(0)" onclick="navGo('tl-sec');closeNav()">Timeline</a></li>
+      <li><a id="nv-a" href="javascript:void(0)" onclick="navGo('ab-sec');closeNav()">Observatory</a></li>
+      <li><a id="nv-s" href="javascript:void(0)" onclick="openEquationSearch();closeNav()">Library</a></li>
+      <li><a id="nv-e" class="earth-link" href="javascript:void(0)" onclick="navEarth();closeNav()">🌍 Earth</a></li>
+    </ul>
+    <div class="ndiv ndiv-user"></div>
+    <div class="nuser" id="navUser">
+      <span class="nuname" id="navUname"></span>
+      <button class="nlogout" onclick="logout();closeNav()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════ MAIN VIEW ══════════ -->
+<div class="scrolly-rail" id="srail"></div><div class="scrolly-cap" id="scap"></div>
+<div class="scrolly-progress" id="sprogress"><span></span></div>
+<div class="scrolly-signal" id="ssignal"><span class="signal-dot"></span><span id="ssignalText">EVENT HORIZON</span></div>
+<div id="main-view">
+  <section class="hero">
+    <div class="eyebrow"><div class="e-line"></div><span class="e-txt">Quan-Taara Interface Mark-I · Sagittarius A Edition</span></div>
+    <h1 class="htitle">MAKE<br><em>YOUR PHYSICS</em><br>GOATED</h1>
+    <div class="hero-meta">
+      <p class="hero-desc">An immersive compendium spanning twenty disciplines — from quantum foam to the edge of the observable universe. Live Earth data included.</p>
+      <div class="hero-stats">
+        <div><div class="stat-num" id="disciplineCount">20</div><div class="stat-lbl">Disciplines</div></div>
+        <div><div class="stat-num" id="equationCount">1,100+</div><div class="stat-lbl">Equations</div></div>
+        <div><div class="stat-num">∞</div><div class="stat-lbl">Wonder</div></div>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <div class="cta-btn" onclick="document.getElementById('disciples').scrollIntoView({behavior:'smooth'})">
+        <span>Enter Interface</span>
+      </div>
+    </div>
+    <div class="scroll-hint"><div class="s-line"></div><div class="s-txt">Scroll</div></div>
+  </section>
+
+  <section id="disciples">
+    <div class="sec-label">Foundational &amp; Frontier Fields</div>
+    <h2 class="sec-title">The Disciples</h2>
+    <div class="pgrid" id="pgrid"></div>
+  </section>
+
+  <section id="tl-sec">
+    <div class="sec-label">Chronology of Discovery</div>
+    <h2 class="sec-title">Timeline of Discovery</h2>
+    <div class="timeline" id="tl"></div>
+  </section>
+
+  <section id="ab-sec">
+    <div class="sec-label">The Observatory</div>
+    <h2 class="sec-title">About this Interface</h2>
+    <p style="font-size:16px;line-height:1.9;color:var(--text2);max-width:680px">
+      Quan-Taara Interface Mark-I is an interactive physics and astrophysics compendium. 
+      The background renders a live black hole simulation with Keplerian disk rotation and relativistic jets. 
+      The Earth Observatory pulls live global events from <strong style="color:var(--text)">NASA EONET</strong> and real-time weather from 
+      <strong style="color:var(--text)">Open-Meteo</strong> — both free, no API key required. 
+      ASTROPIX AI answers common physics and space questions locally, with optional Ollama or Groq support for deeper responses.
+    </p>
+  </section>
+
+  <footer>
+    <div class="f-logo">Quan-Taara</div>
+    <div class="f-meta">Interface Mark-I · Sagittarius A Edition</div>
+  </footer>
+</div>
+
+<!-- PHYSICS MODAL -->
+<div class="moverlay" id="modal">
+  <div class="mcontent">
+    <div class="mhdr">
+      <div><div class="mhdr-lbl">Discipline — Deep Dive</div><h2 class="mhdr-title" id="mtitle"></h2></div>
+      <button class="mclose" id="mclose">✕</button>
+    </div>
+    <div class="mbody" id="mbody"></div>
+    <div class="detail-panel" id="dpanel">
+      <div class="dp-hdr">
+        <div><div class="dp-lbl">Equation Detail</div><h3 class="dp-title" id="dp-title"></h3></div>
+        <button class="dp-close" id="dp-close">✕</button>
+      </div>
+      <div class="dp-formula"><div class="dp-fml" id="dp-fml"></div></div>
+      <div class="dp-body">
+        <div class="dp-sec">
+          <div class="dp-sec-lbl">
+            <span>Simulation Lab</span>
+            <button class="manim-replay" id="manim-replay" type="button">↻ Restart</button>
+          </div>
+          <div class="manim-stage" id="manim-stage">
+            <div class="manim-grid"></div>
+            <canvas class="manim-canvas" id="manim-canvas"></canvas>
+            <div class="sim-badge">Manim-inspired · live model</div>
+            <div class="manim-caption" id="manim-caption"></div>
+          </div>
+        </div>
+        <div class="dp-sec" id="dp-plot-sec">
+          <div class="dp-sec-lbl"><span>Interactive Plot</span></div>
+          <div class="plot-stage" id="plot-stage">
+            <svg class="plot-svg" id="plot-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+          <div class="plot-controls" id="plot-controls"></div>
+          <div class="plot-readout" id="plot-readout"></div>
+        </div>
+        <div class="dp-sec" id="dp-scene3d-sec">
+          <div class="dp-sec-lbl"><span>3D Physical Simulation</span></div>
+          <div class="scene3d-stage" id="scene3d-stage">
+            <canvas class="scene3d-canvas" id="scene3d-canvas"></canvas>
+            <div class="scene3d-tag">Live · Reactive</div>
+            <div class="scene3d-label" id="scene3d-label">Cosmic Field</div>
+          </div>
+        </div>
+        <div class="dp-sec"><div class="dp-sec-lbl">Explanation</div><div class="dp-txt" id="dp-exp"></div></div>
+        <div class="dp-sec"><div class="dp-sec-lbl">Derivation</div><div class="dp-txt" id="dp-drv"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EQUATION LIBRARY SEARCH -->
+<div class="eq-search-overlay" id="eqSearchOverlay" aria-hidden="true">
+  <div class="eq-search-shell">
+    <div class="eq-search-head">
+      <div>
+        <div class="eq-search-kicker">Quan-Taara // Equation Archive</div>
+        <h2 class="eq-search-title">Search the library</h2>
+        <p class="eq-search-sub">A searchable atlas of motion, fields, matter, light, and the equations that connect them.</p>
+      </div>
+      <div class="eq-search-head-actions">
+        <span class="eq-search-shortcut">/ or ⌘K</span>
+        <button class="eq-search-close" id="eqSearchClose" type="button" aria-label="Close equation library">✕</button>
+      </div>
+    </div>
+    <div class="eq-search-bar">
+      <span class="eq-search-glyph">⌕</span>
+      <input id="eqSearchInput" type="search" autocomplete="off" spellcheck="false" placeholder="Try: entropy, Maxwell, orbit, ∇, black hole...">
+      <span class="eq-search-count" id="eqSearchCount">0 results</span>
+    </div>
+    <div class="eq-search-body">
+      <aside class="eq-search-sidebar">
+        <div class="eq-side-kicker">Navigate the archive</div>
+        <div class="eq-side-title">Disciplines</div>
+        <div class="eq-search-filters" id="eqSearchFilters"></div>
+      </aside>
+      <main class="eq-search-main">
+        <div class="eq-results-toolbar">
+          <span>Equation results</span>
+          <span class="eq-results-hint">Select one to open its simulation lab</span>
+        </div>
+        <div class="eq-search-results" id="eqSearchResults"></div>
+      </main>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EARTH VIEW ══════════ -->
+<div id="earth-view">
+  <div class="e-search-wrap">
+    <div class="e-search" style="position:relative">
+      <input class="e-sinp" id="esinp" type="text" placeholder="Search any city or country…" autocomplete="off" spellcheck="false">
+      <button class="e-sbtn" onclick="earthSearch()">Search</button>
+      <button class="e-locbtn" onclick="getGeoLoc()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+        Me
+      </button>
+    </div>
+    <div class="e-drop" id="edrop"></div>
+  </div>
+  <div class="e-tooltip" id="ett">
+    <div class="ett-type" id="ett-type"></div>
+    <div class="ett-title" id="ett-title"></div>
+    <div class="ett-date" id="ett-date"></div>
+  </div>
+  <div class="e-zoom">
+    <button class="e-zbtn" onclick="gzoom(-1)" title="Zoom in">+</button>
+    <button class="e-zbtn" onclick="gzoom(1)" title="Zoom out">−</button>
+  </div>
+  <div class="e-legend" id="elegend">
+    <div class="e-leg-title">Live Events</div>
+    <div id="eleg-body"></div>
+  </div>
+  <div class="e-hint" id="ehint">
+    <div class="e-hint-pill">Drag to rotate · <span>Click</span> for weather · <span>Scroll</span> to zoom</div>
+  </div>
+  <div class="wpanel" id="wpanel">
+    <div class="wp-hdr">
+      <div class="wp-lbl"><span>Weather</span><button class="wp-close" onclick="closeWx()">✕</button></div>
+      <div class="wp-loc" id="wploc">—</div>
+      <div class="wp-coords" id="wpcoords">—</div>
+    </div>
+    <div id="wpbody" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+      <div class="wp-loading"><div class="wp-loading-ring"></div><div class="wp-loading-txt">Fetching atmosphere</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- AI WIDGET -->
+<button class="ai-fab" id="aitrig">
+  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+</button>
+<div class="ai-win" id="aiwin">
+  <div class="ai-hdr">
+    <div class="ai-av"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7" stroke-dasharray="3 2"/></svg></div>
+    <div>
+      <div class="ai-title">ASTROPIX</div>
+      <div class="ai-status"><div class="ai-dot"></div><span>Online</span></div>
+    </div>
+    <button class="ai-hist-btn" id="aiHBtn" onclick="toggleHist()">History</button>
+  </div>
+  <div class="ai-msgs" id="aimsgs">
+    <div class="msg bot">ASTROPIX online. Sign in and ask me anything — black holes, quantum mechanics, or something completely ridiculous. I'm ready.</div>
+  </div>
+  <div class="hist-panel" id="histPanel"></div>
+  <div class="ai-row">
+    <input class="ai-inp" id="aiinp" type="text" placeholder="Ask anything about the cosmos…">
+    <button class="ai-send" id="aisend">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="Mainscript.js">
+
+</script>
+
+</body>
+</html>
