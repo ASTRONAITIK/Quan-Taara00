@@ -60,10 +60,12 @@
   </button>
   <div class="nav-collapse">
     <ul class="nlinks">
+      <li><a id="nv-a" href="javascript:void(0)" onclick="navGo('ab-sec');closeNav()">Observatory</a></li>
       <li><a id="nv-d" href="javascript:void(0)" onclick="navGo('disciples');closeNav()">Disciples</a></li>
       <li><a id="nv-t" href="javascript:void(0)" onclick="navGo('tl-sec');closeNav()">Timeline</a></li>
-      <li><a id="nv-a" href="javascript:void(0)" onclick="navGo('ab-sec');closeNav()">Observatory</a></li>
+      
       <li><a id="nv-s" href="javascript:void(0)" onclick="openEquationSearch();closeNav()">Library</a></li>
+      <li><a id="nv-n" href="javascript:void(0)" onclick="openDispatch();closeNav()">Dispatch</a></li>
       <li><a id="nv-e" class="earth-link" href="javascript:void(0)" onclick="navEarth();closeNav()">🌍 Earth</a></li>
     </ul>
     <div class="ndiv ndiv-user"></div>
@@ -91,13 +93,23 @@
       </div>
     </div>
     <div class="hero-cta">
-      <div class="cta-btn" onclick="document.getElementById('disciples').scrollIntoView({behavior:'smooth'})">
+      <div class="cta-btn" onclick="document.getElementById('ab-sec').scrollIntoView({behavior:'smooth'})">
         <span>Enter Interface</span>
       </div>
     </div>
     <div class="scroll-hint"><div class="s-line"></div><div class="s-txt">Scroll</div></div>
   </section>
-
+  <section id="ab-sec">
+    <div class="sec-label">The Observatory</div>
+    <h2 class="sec-title">About this Interface</h2>
+    <p style="font-size:16px;line-height:1.9;color:var(--text2);max-width:680px">
+      Quan-Taara Interface Mark-I is an interactive physics and astrophysics compendium. 
+      The background renders a live black hole simulation with Keplerian disk rotation and relativistic jets. 
+      The Earth Observatory pulls live global events from <strong style="color:var(--text)">NASA EONET</strong> and real-time weather from 
+      <strong style="color:var(--text)">Open-Meteo</strong> — both free, no API key required. 
+      ASTROPIX AI answers common physics and space questions locally, with optional Ollama or Groq support for deeper responses.
+    </p>
+  </section>
   <section id="disciples">
     <div class="sec-label">Foundational &amp; Frontier Fields</div>
     <h2 class="sec-title">The Disciples</h2>
@@ -110,17 +122,7 @@
     <div class="timeline" id="tl"></div>
   </section>
 
-  <section id="ab-sec">
-    <div class="sec-label">The Observatory</div>
-    <h2 class="sec-title">About this Interface</h2>
-    <p style="font-size:16px;line-height:1.9;color:var(--text2);max-width:680px">
-      Quan-Taara Interface Mark-I is an interactive physics and astrophysics compendium. 
-      The background renders a live black hole simulation with Keplerian disk rotation and relativistic jets. 
-      The Earth Observatory pulls live global events from <strong style="color:var(--text)">NASA EONET</strong> and real-time weather from 
-      <strong style="color:var(--text)">Open-Meteo</strong> — both free, no API key required. 
-      ASTROPIX AI answers common physics and space questions locally, with optional Ollama or Groq support for deeper responses.
-    </p>
-  </section>
+  
 
   <footer>
     <div class="f-logo">Quan-Taara</div>
@@ -279,10 +281,50 @@
     </button>
   </div>
 </div>
+<!-- COSMIC DISPATCH — LIVE SPACE NEWS -->
+<div class="dispatch-overlay" id="dispatchOverlay" aria-hidden="true">
+  <div class="dispatch-panel">
+    <div class="dispatch-hdr">
+      <div>
+        <div class="dispatch-kicker">Quan-Taara // Live Feed</div>
+        <h2 class="dispatch-title">Cosmic Dispatch</h2>
+      </div>
+      <button class="dispatch-close" id="dispatchClose" aria-label="Close dispatch">✕</button>
+    </div>
+    <div class="dispatch-filters">
+      <button class="dispatch-filter active" data-type="articles" type="button">Articles</button>
+      <button class="dispatch-filter" data-type="blogs" type="button">Blogs</button>
+      <button class="dispatch-filter" data-type="reports" type="button">ISS Reports</button>
+    </div>
+    <div class="dispatch-body" id="dispatchBody">
+      <div class="dispatch-loading"><div class="dispatch-ring"></div><div>Tuning into mission control…</div></div>
+    </div>
+  </div>
+</div>
 
-<script src="Mainscript.js">
+<script src="js/core/cursor.js"></script>
+<script src="js/core/navigation.js"></script>
+<script src="js/visuals/black-hole-background.js"></script>
 
-</script>
+<script src="js/earth-observatory/globe-view.js"></script>
+<script src="js/earth-observatory/live-events.js"></script>
+<script src="js/earth-observatory/weather-panel.js"></script>
+
+<script src="js/astropix/auth.js"></script>
+<script src="js/astropix/local-physics-brain.js"></script>
+<script src="js/astropix/chat.js"></script>
+
+<script src="js/physics-lab/scroll-experience.js"></script>
+<script src="js/physics-lab/physics-catalog.js"></script>
+<script src="js/physics-lab/catalog-renderer.js"></script>
+<script src="js/physics-lab/equation-modal.js"></script>
+<script src="js/physics-lab/interactive-plots.js"></script>
+<script src="js/physics-lab/simulation-2d.js"></script>
+<script src="js/physics-lab/simulation-3d.js"></script>
+<script src="js/physics-lab/equation-search.js"></script>
+<script src="js/dispatch/dispatch-feed.js"></script>
+<script src="js/rest/miss.js"></script>
+<script src="js/core/app-init.js"></script>
 
 </body>
 </html>
